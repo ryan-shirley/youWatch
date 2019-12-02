@@ -14,16 +14,26 @@ exports.updateStatus = functions.https.onRequest(async (request, response) => {
 
     let resp
 
+    // Update User Status
     let userRef = await db.collection("family").doc(name)
     resp = await userRef.update({
         isHome: homeStatus
     });
+
+    // Add a new document with a generated id.
+    await db.collection('status-history').add({
+        person: name,
+        input: req.body.enteredOrExited,
+        isHome: homeStatus,
+        timestamp: new Date()
+    })
 
     response.send({
         data: resp,
         body: 'Congradulations 😀! You have updated your status'
     })
 });
+
 
 
    // Working!
