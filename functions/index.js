@@ -36,15 +36,15 @@ exports.updateStatus = functions.https.onRequest(async (request, response) => {
 
 
 
-   // Working!
-    // await db.collection("family").doc("ryan").get().then(doc => {
-    //     if (!doc.exists) {
-    //       resp = 'No such document!';
-    //     } else {
-    //         resp = doc.data()
-    //     }
-    //     return ''
-    // })
-    // .catch(err => {
-    //     return err
-    // });
+// Working!
+// await db.collection("family").doc("ryan").get().then(doc => {
+//     if (!doc.exists) {
+//       resp = 'No such document!';
+//     } else {
+//         resp = doc.data()
+//     }
+//     return ''
+// })
+// .catch(err => {
+//     return err
+// });
