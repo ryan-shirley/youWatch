@@ -11,11 +11,9 @@ exports.updateStatus = functions.https.onRequest(async (request, response) => {
     const name = req.query.name
     const homeStatus = req.query.enteredOrExited === 'entered' ? true : false
 
-    let resp
-
     // Update User Status
     let userRef = await db.collection("family").doc(name)
-    resp = await userRef.update({
+    let resp = await userRef.update({
         isHome: homeStatus
     });
 
