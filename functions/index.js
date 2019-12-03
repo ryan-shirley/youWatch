@@ -8,9 +8,8 @@ let db = admin.firestore();
 exports.updateStatus = functions.https.onRequest(async (request, response) => {
 
     const req = request
-    const name = req.body.name
-    const homeStatus = req.body.enteredOrExited === 'entered' ? true : false
-    const locationMapImageUrl = req.body.locationMapImageUrl
+    const name = req.query.name
+    const homeStatus = req.query.enteredOrExited === 'entered' ? true : false
 
     let resp
 
@@ -23,7 +22,7 @@ exports.updateStatus = functions.https.onRequest(async (request, response) => {
     // Add a new document with a generated id.
     await db.collection('status-history').add({
         person: name,
-        input: req.body.enteredOrExited,
+        input: req.query.enteredOrExited,
         isHome: homeStatus,
         timestamp: new Date()
     })
