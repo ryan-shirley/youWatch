@@ -69,3 +69,7 @@ node_modules/
 # Data & Model Folder
 **/object-detection/data/
 **/object-detection/models/
+**/object-detection/__pycache__
+
+# GCP Service Account
+youwatch-homecctv-21bf4eac8f29.json
