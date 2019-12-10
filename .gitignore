@@ -63,3 +63,9 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+.DS_Store
+
+# Data & Model Folder
+**/object-detection/data/
+**/object-detection/models/
