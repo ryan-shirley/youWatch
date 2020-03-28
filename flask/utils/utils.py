@@ -26,13 +26,13 @@ def getListOfFiles(dirName):
 # Check if file has finished saving
 def check_save_status(file_path):
     init_file_size = os.path.getsize(file_path)
-    print("Initial file size:", init_file_size)
+    # print("Initial file size:", init_file_size)
 
     # Wait 3 seconds
     time.sleep(3)
 
     final_file_size = os.path.getsize(file_path)
-    print("Final file size:", final_file_size)
+    # print("Final file size:", final_file_size)
 
     # Check for difference in file size
     if init_file_size == final_file_size:
