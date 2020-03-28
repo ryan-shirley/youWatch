@@ -1,5 +1,6 @@
 .DS_Store
-flask/app/__pycache__/
-flask/__pycache__/
+
+*__pycache__/
+
 flask/env/
 flask/app/files/

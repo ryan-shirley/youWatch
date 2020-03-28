@@ -9,31 +9,13 @@ from rq import Queue
 import time
 import os
 
+# Utils
+from utils.utils import getListOfFiles
+
 # Redis Config
 redis_host = os.getenv('REDIS_HOST', 'localhost')
 r = redis.Redis(host=redis_host, port=6379, db=0)
 q = Queue(connection=r)
-
-# Get list of all .mp4 files
-def getListOfFiles(dirName):
-    # create a list of file and sub directories 
-    # names in the given directory 
-    listOfFile = os.listdir(dirName)
-    allFiles = list()
-
-    # Iterate over all the entries
-    for entry in listOfFile:
-        # Create full path
-        fullPath = os.path.join(dirName, entry)
-        # If entry is a directory then get the list of files in this directory 
-        if os.path.isdir(fullPath):
-            allFiles = allFiles + getListOfFiles(fullPath)
-        else:
-            allFiles.append(fullPath)
-
-    video_files = [i for i in allFiles if i.endswith('.mp4')]            
-    
-    return video_files
 
 # Check for new files
 def check_new_files():
@@ -62,4 +44,3 @@ def inti_watcher():
     while True:
         schedule.run_pending()
         time.sleep(1)
-        
