@@ -1,3 +1,5 @@
+import os
+
 # Get list of all .mp4 files
 def getListOfFiles(dirName):
     # create a list of file and sub directories 
