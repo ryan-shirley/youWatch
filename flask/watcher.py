@@ -10,7 +10,7 @@ import time
 import os
 
 # Utils
-from utils.utils import getListOfFiles
+from utils.utils import getListOfFiles, check_save_status
 
 # Redis Config
 redis_host = os.getenv('REDIS_HOST', 'localhost')
@@ -25,6 +25,12 @@ def check_new_files():
     files = getListOfFiles(dirPath)
 
     # TODO: Add files individualy into request queue
+    for file_path in files:
+        is_finished_saving = check_save_status(file_path)
+
+        print("File finshed saving?", is_finished_saving)
+
+
     print(files)
 
     print("Task: Completed checking for new files")
