@@ -1,5 +1,5 @@
-from watcher import inti_watcher
+from watcher import intit_watcher
 
 # Run watcher
 if __name__ == "__main__":
-    inti_watcher()
+    intit_watcher()
