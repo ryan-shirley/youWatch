@@ -1,6 +1,10 @@
 import redis
 from rq import Worker, Queue, Connection
 import os
+import time
+
+# Sleep - Wait so redis will have started
+time.sleep(2)
 
 # Listening
 listen = ['high', 'default', 'low']
