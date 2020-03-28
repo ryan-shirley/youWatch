@@ -19,21 +19,19 @@ q = Queue(connection=r)
 
 # Check for new files
 def check_new_files():
-    print("Task: Checking for new files")
+    print("\nTask: Checking for new files\n")
 
-    dirPath = "./app/files/recordings"
-    files = getListOfFiles(dirPath)
+    dir_path = "./app/files/recordings"
+    files = getListOfFiles(dir_path)
 
     # TODO: Add files individualy into request queue
     for file_path in files:
         is_finished_saving = check_save_status(file_path)
+        file_name = os.path.basename(file_path)
 
-        print("File finshed saving?", is_finished_saving)
+        print(f"File {file_name} is finshed saving '{is_finished_saving}'.")
 
-
-    print(files)
-
-    print("Task: Completed checking for new files")
+    print("\nTask: Completed checking for new files\n")
     return
 
 # Add job to queue to check for new files
