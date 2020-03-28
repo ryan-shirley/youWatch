@@ -11,6 +11,7 @@ import os
 
 # Utils
 from utils.utils import getListOfFiles, check_save_status
+from utils.analysis import analyse_file
 
 # Redis Config
 redis_host = os.getenv('REDIS_HOST', 'localhost')
@@ -29,7 +30,10 @@ def check_new_files():
         is_finished_saving = check_save_status(file_path)
         file_name = os.path.basename(file_path)
 
-        print(f"File {file_name} is finshed saving '{is_finished_saving}'.")
+        # Check File has finished saving
+        if is_finished_saving == True:
+            print(f"Adding {file_name} to the queue to be analysed.")
+            q.enqueue(analyse_file, file_path, file_name)
 
     print("\nTask: Completed checking for new files\n")
     return
