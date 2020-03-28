@@ -25,30 +25,34 @@ def check_new_files():
     dir_path = "./files/recordings"
     files = getListOfFiles(dir_path)
 
-    # TODO: Add files individualy into request queue
-    for file_path in files:
-        is_finished_saving = check_save_status(file_path)
-        file_name = os.path.basename(file_path)
+    if len(files) > 0:
+        # TODO: Add files individualy into request queue
+        for file_path in files:
+            is_finished_saving = check_save_status(file_path)
+            file_name = os.path.basename(file_path)
 
-        # Check File has finished saving
-        if is_finished_saving == True:
-            print(f"Adding {file_name} to the queue to be analysed.")
-            q.enqueue(analyse_file, file_path, file_name)
+            # Check File has finished saving
+            if is_finished_saving == True:
+                print(f"Adding {file_name} to the queue to be analysed.")
+                q.enqueue(analyse_file, file_path, file_name)
 
-    print("\nTask: Completed checking for new files\n")
-    return
+        print("\nTask: Completed checking for new files\n")
+    else:
+        print("No files")
 
 # Add job to queue to check for new files
 def job_check_new_files():
     print("Add new Job: Check files to queue")
-    q.enqueue(job_check_new_files)
+    q.enqueue(check_new_files)
 
 # Schedule Config
 schedule.every(1).minutes.do(job_check_new_files)
 
 # Inital function to run schedule
-def inti_watcher():
-    print('Init watcher')
+def intit_watcher():
+    print('Init watcher on redis host:', redis_host)
+    time.sleep(5)
+    job_check_new_files()
 
     while True:
         schedule.run_pending()
