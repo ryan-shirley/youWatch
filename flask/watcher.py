@@ -35,11 +35,11 @@ def check_new_files():
     return
 
 # Add job to queue to check for new files
-def job():
-    q.enqueue(check_new_files)
+def job_check_new_files():
+    q.enqueue(job_check_new_files)
 
 # Schedule Config
-schedule.every(1).minutes.do(job)
+schedule.every(1).minutes.do(job_check_new_files)
 
 # Inital function to run schedule
 def inti_watcher():
