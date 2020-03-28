@@ -22,7 +22,7 @@ q = Queue(connection=r)
 def check_new_files():
     print("\nTask: Checking for new files\n")
 
-    dir_path = "./app/files/recordings"
+    dir_path = "./files/recordings"
     files = getListOfFiles(dir_path)
 
     # TODO: Add files individualy into request queue
@@ -40,6 +40,7 @@ def check_new_files():
 
 # Add job to queue to check for new files
 def job_check_new_files():
+    print("Add new Job: Check files to queue")
     q.enqueue(job_check_new_files)
 
 # Schedule Config

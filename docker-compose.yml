@@ -30,7 +30,7 @@ services:
       context: "./flask"
     environment:
       - REDIS_HOST=redis_server
-    command: python3 worker.py
+    command: python3 -u worker.py
     depends_on:
       - redis_server
     restart: always
@@ -41,7 +41,7 @@ services:
       context: "./flask"
     environment:
       - REDIS_HOST=redis_server
-    command: python3 run_watcher.py
+    command: python3 -u run_watcher.py
     depends_on:
       - redis_server
     restart: always
