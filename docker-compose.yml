@@ -35,10 +35,10 @@ services:
       - redis_server
     restart: always
     volumes:
-      - "${HOST_RECORDINGS}:/app/files/recordings"
-      - "${HOST_POSITIVE_MACTHES}:/app/files/positive-matches"
-      - "${HOST_FALSE_POSITIVES_MACTHES}:/app/files/false-positives"
+      - "${HOST_FILES}:/app/files"
       - "${HOST_MODELS}:/app/models"
+
+      # TODO: Link single folder to files not multiple sperate ones
 
   watcher:
     container_name: watcher
@@ -51,9 +51,7 @@ services:
       - redis_server
     restart: always
     volumes:
-      - "${HOST_RECORDINGS}:/app/files/recordings"
-      - "${HOST_POSITIVE_MACTHES}:/app/files/positive-matches"
-      - "${HOST_FALSE_POSITIVES_MACTHES}:/app/files/false-positives"
+      - "${HOST_FILES}:/app/files"
       - "${HOST_MODELS}:/app/models"
 
 volumes:
