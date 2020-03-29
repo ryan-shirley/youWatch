@@ -10,7 +10,7 @@
 
 ### 2. Run File Watcher
 `source flask/env/bin/activate`
-`python3 flask/run_wacther.py`
+`python3 flask/run_watcher.py`
 
 ### 3. Run Redis Server
 `redis-server`
