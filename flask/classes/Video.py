@@ -134,9 +134,10 @@ class Video:
         # Loop through video file
         while(True): 
 
-            # # Skip frames
-            # for j in range(round(video.fps / 3)):
-            #     ret,frame = cam.read() 
+            # Skip frames
+            if current_frame_number > 0:
+                for j in range(5):
+                    ret,frame = cam.read() 
 
             # Generate indiviudal frame
             generated_frame_path = self.generate_frame(cam, current_frame_number)
