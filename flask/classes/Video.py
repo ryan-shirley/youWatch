@@ -109,11 +109,13 @@ class Video:
         output_path = frame_path.replace(self.frame_generated_path,self.frame_predictions_path)
 
         # print("Saving analysed frame.")
-        detection = detector.detectObjectsFromImage(input_image=frame_path, output_image_path=output_path)
+        # Custom object detector to only detect people
+        custom = detector.CustomObjects(person=True)
+        detection_results = detector.detectCustomObjectsFromImage(custom_objects=custom, input_image=frame_path, output_image_path=output_path, minimum_percentage_probability=40)
 
         # Loop through detections found
         detections = []
-        for eachItem in detection:
+        for eachItem in detection_results:
             detections.append(eachItem["name"])
             # print(eachItem["name"] , " : ", eachItem["percentage_probability"])
         
