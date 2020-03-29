@@ -37,7 +37,7 @@ services:
     volumes:
       - "${HOST_RECORDINGS}:/app/files/recordings"
       - "${HOST_POSITIVE_MACTHES}:/app/files/positive-matches"
-      - "${HOST_FALSE_POSITIVES_MACTHES}:/app/files/positive-matches"
+      - "${HOST_FALSE_POSITIVES_MACTHES}:/app/files/false-positives"
       - "${HOST_MODELS}:/app/models"
 
   watcher:
@@ -53,7 +53,7 @@ services:
     volumes:
       - "${HOST_RECORDINGS}:/app/files/recordings"
       - "${HOST_POSITIVE_MACTHES}:/app/files/positive-matches"
-      - "${HOST_FALSE_POSITIVES_MACTHES}:/app/files/positive-matches"
+      - "${HOST_FALSE_POSITIVES_MACTHES}:/app/files/false-positives"
       - "${HOST_MODELS}:/app/models"
 
 volumes:
