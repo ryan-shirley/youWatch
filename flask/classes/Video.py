@@ -64,6 +64,20 @@ class Video:
 
         return new_file_path
 
+    # Remove files created from analysis
+    def clean_temporary_files(self):
+        # Clean original
+        originalfilelist = [ f for f in os.listdir(self.frame_generated_path) if f.endswith(".jpg") ]
+        for f in originalfilelist:
+            os.remove(os.path.join(self.frame_generated_path, f))
+        
+        # Clean analysed
+        analysedfilelist = [ f for f in os.listdir(self.frame_predictions_path) if f.endswith(".jpg") ]
+        for f in analysedfilelist:
+            os.remove(os.path.join(self.frame_predictions_path, f))
+
+        return self
+
     # Generate frame from video
     def generate_frame(self, cam, currentframe):
         # reading from frame 
@@ -158,6 +172,9 @@ class Video:
 
         # Release all space and windows once done 
         cam.release() 
-        cv2.destroyAllWindows() 
+        cv2.destroyAllWindows()
+
+        # Clean up the temp files
+        self.clean_temporary_files()
         
         return self
