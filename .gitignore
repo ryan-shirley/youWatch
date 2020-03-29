@@ -4,3 +4,4 @@
 
 flask/env/
 flask/files/
+.env

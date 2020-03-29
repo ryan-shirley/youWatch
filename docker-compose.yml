@@ -34,6 +34,8 @@ services:
     depends_on:
       - redis_server
     restart: always
+    volumes:
+      - "${HOST_RECORDINGS}:/app/files/recordings"
 
   watcher:
     container_name: watcher
@@ -45,6 +47,8 @@ services:
     depends_on:
       - redis_server
     restart: always
+    volumes:
+      - "${HOST_RECORDINGS}:/app/files/recordings"
 
 volumes:
   redis_data:
