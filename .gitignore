@@ -5,3 +5,4 @@
 flask/env/
 flask/files/
 .env
+dump.rdb
