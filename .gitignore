@@ -6,3 +6,4 @@ flask/env/
 flask/files/
 .env
 dump.rdb
+flask/models/

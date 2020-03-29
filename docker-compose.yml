@@ -36,6 +36,8 @@ services:
     restart: always
     volumes:
       - "${HOST_RECORDINGS}:/app/files/recordings"
+      - "${HOST_POSITIVE_MACTHES}:/app/files/positive-matches"
+      - "${HOST_MODELS}:/app/models"
 
   watcher:
     container_name: watcher
@@ -49,6 +51,8 @@ services:
     restart: always
     volumes:
       - "${HOST_RECORDINGS}:/app/files/recordings"
+      - "${HOST_POSITIVE_MACTHES}:/app/files/positive-matches"
+      - "${HOST_MODELS}:/app/models"
 
 volumes:
   redis_data:

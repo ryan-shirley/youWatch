@@ -4,12 +4,22 @@ import time
 
 # Object Detection
 import cv2
+from imageai.Detection import ObjectDetection
+
+# Set object detection model
+detector = ObjectDetection()
+detector.setModelTypeAsYOLOv3()
+detector.setModelPath("./models/yolo.h5")
+detector.loadModel()
 
 class Video:
     def __init__(self, file_path):
         self.path = file_path
         self.name = os.path.basename(file_path)
         self.frame_generated_path = "./files/generated-frames/"
+        self.frame_predictions_path = "./files/predicted-frames/"
+        self.positive_matches = "./files/positive-matches/"
+        self.detections = []
 
     # Check if file has finished saving
     def check_if_fully_saved(self):
@@ -42,6 +52,17 @@ class Video:
 
         return self
 
+    # Move file to new folder
+    def move_to_folder(self, new_path):
+        # Generate new file path
+        new_file_name = self.path.replace("-saved", '')
+        new_file_path = new_file_name.replace("./files/recordings/", new_path)
+
+        # Move file to new location
+        os.rename(self.path, new_file_path)
+
+        return new_file_path
+
     # Generate frame from video
     def generate_frame(self, cam, currentframe):
         # reading from frame 
@@ -67,6 +88,22 @@ class Video:
         else: 
             return False
 
+    # Analyse individual frame
+    def analyse_frame(self, frame_path):
+        # Get path to where to save prediction
+        output_path = frame_path.replace(self.frame_generated_path,self.frame_predictions_path)
+
+        # print("Saving analysed frame.")
+        detection = detector.detectObjectsFromImage(input_image=frame_path, output_image_path=output_path)
+
+        # Loop through detections found
+        detections = []
+        for eachItem in detection:
+            detections.append(eachItem["name"])
+            # print(eachItem["name"] , " : ", eachItem["percentage_probability"])
+        
+        return detections
+
     # Analyse Video
     def analyse_video(self):
         print('Analysing video file')
@@ -77,22 +114,45 @@ class Video:
         cam = cv2.VideoCapture(self.path) 
         
         # Current frame number
-        current_frame = 0
+        current_frame_number = 0
         
         # Loop through video file
         while(True): 
-            
+
+            # # Skip frames
+            # for j in range(round(video.fps / 3)):
+            #     ret,frame = cam.read() 
+
             # Generate indiviudal frame
-            generated_frame = self.generate_frame(cam, current_frame)
+            generated_frame_path = self.generate_frame(cam, current_frame_number)
 
             # Check if new frame was generated
-            if generated_frame:
+            if generated_frame_path:
+                # Analyse Frame
+                detections = self.analyse_frame(generated_frame_path)
+                
+                # Add detections to video object
+                for d in detections:
+                    # If not already in detections add
+                    if d not in self.detections :
+                        self.detections.append(d)
+
+                # If person found
+                if "person" in self.detections:
+                    print("Found a person!")
+
+            #         generateGif(video, cam, currentframe)
+
+                    self.move_to_folder(self.positive_matches)
+                    break
 
                 # increasing counter so that it will 
                 # show how many frames are created 
-                current_frame += 1
+                current_frame_number += 1
             else:
                 print("All frames generated.\nNo person was found!")
+
+                # moveToFolder(video.fileName, video.filePath, falsePositivePath)
                 break
 
         # Release all space and windows once done 
