@@ -19,6 +19,7 @@ class Video:
         self.frame_generated_path = "./files/generated-frames/"
         self.frame_predictions_path = "./files/predicted-frames/"
         self.positive_matches = "./files/positive-matches/"
+        self.false_positive_folder = "./files/false-positives/"
         self.detections = []
 
     # Check if file has finished saving
@@ -152,7 +153,7 @@ class Video:
             else:
                 print("All frames generated.\nNo person was found!")
 
-                # moveToFolder(video.fileName, video.filePath, falsePositivePath)
+                self.move_to_folder(self.false_positive_folder)
                 break
 
         # Release all space and windows once done 
