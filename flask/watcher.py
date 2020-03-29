@@ -20,7 +20,7 @@ q = Queue(connection=r)
 
 # Check for new files
 def check_new_files():
-    print("\nTask: Checking for new files\n")
+    print("Task: Checking for new files\n")
 
     dir_path = "./files/recordings"
     files = getListOfFiles(dir_path)
@@ -44,7 +44,7 @@ def check_new_files():
 
         print("\nTask: Completed checking for new files\n")
     else:
-        print("No files")
+        print("No new files")
 
 # Add job to queue to check for new files
 def job_check_new_files():
