@@ -19,10 +19,11 @@ def getListOfFiles(dir_path):
         else:
             all_files.append(full_path)
 
-    # Filter to .mp4 files
-    video_files = [i for i in all_files if i.endswith('.mp4')]            
+    # Filter to only new .mp4 files
+    video_files = [i for i in all_files if i.endswith('.mp4')]       
+    only_new_files = [i for i in video_files if not i.endswith('-saved.mp4')]
     
-    return video_files
+    return only_new_files
 
 # Check if file has finished saving
 def check_save_status(file_path):

@@ -33,8 +33,14 @@ def check_new_files():
 
             # Check File has finished saving
             if is_finished_saving == True:
-                print(f"Adding {file_name} to the queue to be analysed.")
-                q.enqueue(analyse_file, file_path, file_name)
+                # Rename file - To know is saved
+                new_file_name = file_name.replace(".mp4", "-saved.mp4")
+                new_file_path = file_path.replace(".mp4", "-saved.mp4")
+                os.rename(file_path, new_file_path)
+
+                print(f"Adding {new_file_name} to the queue to be analysed.")
+
+                q.enqueue(analyse_file, new_file_path, new_file_name)
 
         print("\nTask: Completed checking for new files\n")
     else:
