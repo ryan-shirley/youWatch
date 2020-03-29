@@ -15,7 +15,7 @@
 ### 3. Run Redis Server
 `redis-server`
 
-### 5. Run File Watcher
+### 5. Run Flask Sever
 `cd flask`
 `source env/bin/activate`
 `flask run`
