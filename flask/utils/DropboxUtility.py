@@ -3,6 +3,7 @@ import dropbox
 import re
 import os
 import requests
+import json
 
 # Create a dropbox object using an API v2 key
 API_KEY = os.getenv('DROPBOX_API_KEY')
@@ -40,6 +41,7 @@ class DropboxUtility:
     # Notify users with image
     def notify(self, image_url):
         self.iftt_webhook(image_url)
+        self.slack_webhook(image_url)
 
     # IFTT Webhook
     def iftt_webhook(self, image_url):
@@ -49,3 +51,43 @@ class DropboxUtility:
         print('Sending notification using IFTTT')
         dataObj = {"value1" : image_url, "value2" : "Camera Name"}
         requests.post(IFTTT_WEBHOOK, data = dataObj)
+
+    # Slack Webhook
+    def slack_webhook(self, image_url):
+        SLACK_WEBHOOK = os.getenv('SLACK_WEBHOOK')
+
+        # Send notification using Slack
+        print('Sending notification using Slack')
+        dataObj = {
+            "blocks": [
+            {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": ":warning:  *Person found on camera*"
+                    }
+                },
+                {
+                    "type": "context",
+                    "elements": [
+                        {
+                            "text": "*November 12, 2019*",
+                            "type": "mrkdwn"
+                        }
+                    ]
+                },
+                {
+                    "type": "divider"
+                },
+                {
+                    "type": "image",
+                    "image_url": f"{image_url}",
+                    "alt_text": "image1"
+                }
+            ]
+        }
+
+        json_string = json.dumps(dataObj)
+
+        r = requests.post(SLACK_WEBHOOK, data = json_string, headers={'Content-Type': 'application/json'})
+        print("Respononse:",r.text)
