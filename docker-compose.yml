@@ -30,6 +30,8 @@ services:
       context: "./flask"
     environment:
       - REDIS_HOST=redis_server
+      - DROPBOX_API_KEY=${DROPBOX_API_KEY}
+      - IFTTT_WEBHOOK=${IFTTT_WEBHOOK}
     command: python3 -u worker.py
     depends_on:
       - redis_server
@@ -46,6 +48,8 @@ services:
       context: "./flask"
     environment:
       - REDIS_HOST=redis_server
+      - DROPBOX_API_KEY=${DROPBOX_API_KEY}
+      - IFTTT_WEBHOOK=${IFTTT_WEBHOOK}
     command: python3 -u run_watcher.py
     depends_on:
       - redis_server

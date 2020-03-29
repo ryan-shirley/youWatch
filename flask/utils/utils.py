@@ -1,6 +1,7 @@
 # Imports
 import os
 import time
+import requests
 
 # Get list of all .mp4 files
 def getListOfFiles(dir_path):
@@ -24,3 +25,16 @@ def getListOfFiles(dir_path):
     only_new_files = [i for i in video_files if not i.endswith('-saved.mp4')]
     
     return only_new_files
+
+# Notify users with image
+def notify(image_url):
+    iftt_webhook(image_url)
+
+# IFTT Webhook
+def iftt_webhook(image_url):
+    IFTTT_WEBHOOK = os.getenv('IFTTT_WEBHOOK')
+
+    # Send notification using IFTTT
+    print('Sending notification using IFTTT')
+    dataObj = {"value1" : image_url, "value2" : "Camera Name"}
+    requests.post(IFTTT_WEBHOOK, data = dataObj)
