@@ -10,8 +10,10 @@ import time
 import os
 
 # Utils
-from utils.utils import getListOfFiles, check_save_status
-from utils.analysis import analyse_file
+from utils.utils import getListOfFiles
+
+# Custom classes
+from classes.Video import Video
 
 # Redis Config
 redis_host = os.getenv('REDIS_HOST', 'localhost')
@@ -26,25 +28,24 @@ def check_new_files():
     files = getListOfFiles(dir_path)
 
     if len(files) > 0:
-        # TODO: Add files individualy into request queue
+
+        # Add videos into request queue individualy if fully saved
         for file_path in files:
-            is_finished_saving = check_save_status(file_path)
-            file_name = os.path.basename(file_path)
+            video = Video(file_path)
+
+            # Check file has fully saved
+            is_finished_saving = video.check_if_fully_saved()
 
             # Check File has finished saving
             if is_finished_saving == True:
-                # Rename file - To know is saved
-                new_file_name = file_name.replace(".mp4", "-saved.mp4")
-                new_file_path = file_path.replace(".mp4", "-saved.mp4")
-                os.rename(file_path, new_file_path)
+                video.mark_as_saved()
 
-                print(f"Adding {new_file_name} to the queue to be analysed.")
-
-                q.enqueue(analyse_file, new_file_path, new_file_name)
+                print(f"Adding {video.name} to the queue to be analysed.")
+                q.enqueue(video.analyse)
 
         print("\nTask: Completed checking for new files\n")
     else:
-        print("No new files")
+        print("No new video files")
 
 # Add job to queue to check for new files
 def job_check_new_files():
