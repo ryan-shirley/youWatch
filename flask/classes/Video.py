@@ -4,9 +4,9 @@ import time
 import sys
 sys.path.append("..")
 from utils.DropboxUtility import DropboxUtility
-from utils.utils import DropboxUtility
 
 # Object Detection
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # Tesorflow logs | INFO and WARNING messages are not printed 
 import cv2
 from imageai.Detection import ObjectDetection
 
@@ -163,11 +163,11 @@ class Video:
                 if "person" in self.detections:
                     print("Found a person!")
 
+            #         generateGif(video, cam, currentframe)
+
                     # Upload File to Dropbox & notify
                     file = DropboxUtility(self.frame_predictions_path, os.path.basename(generated_frame_path))
                     file.upload()
-
-            #         generateGif(video, cam, currentframe)
 
                     # Move video file
                     self.move_to_folder(self.positive_matches)
