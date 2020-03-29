@@ -41,7 +41,7 @@ def check_new_files():
                 video.mark_as_saved()
 
                 print(f"Adding {video.name} to the queue to be analysed.")
-                q.enqueue(video.analyse)
+                q.enqueue(video.analyse_video)
 
         print("\nTask: Completed checking for new files\n")
     else:
