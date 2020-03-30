@@ -4,6 +4,7 @@ import re
 import os
 import requests
 import json
+from datetime import datetime
 
 # Create a dropbox object using an API v2 key
 API_KEY = os.getenv('DROPBOX_API_KEY')
@@ -64,14 +65,14 @@ class DropboxUtility:
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": ":warning:  *Person found on camera*"
+                        "text": ":warning:  *Person found on camera* :speaker:"
                     }
                 },
                 {
                     "type": "context",
                     "elements": [
                         {
-                            "text": "*November 12, 2019*",
+                            "text": f"*{datetime.today().strftime('%a %d %B, %Y - %I:%M %p')}*",
                             "type": "mrkdwn"
                         }
                     ]
