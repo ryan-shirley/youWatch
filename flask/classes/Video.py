@@ -1,18 +1,21 @@
-# Utilities
+# Logging
+import os, logging
 import warnings
 warnings.filterwarnings('ignore',category=FutureWarning)
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # Tesorflow logs | INFO and WARNING messages are not printed 
+logging.getLogger("tensorflow").setLevel(logging.CRITICAL)
+logging.getLogger("tensorflow_hub").setLevel(logging.CRITICAL)
 
-import os, logging
+# Utilities
 import time
 import sys
 sys.path.append("..")
 from utils.DropboxUtility import DropboxUtility
+from utils.utils import getListOfFiles
 
 # Object Detection
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # Tesorflow logs | INFO and WARNING messages are not printed 
-logging.getLogger("tensorflow").setLevel(logging.CRITICAL)
-logging.getLogger("tensorflow_hub").setLevel(logging.CRITICAL)
 import cv2
+import imageio
 from imageai.Detection import ObjectDetection
 
 # Set object detection model
@@ -31,6 +34,7 @@ class Video:
         self.positive_matches = "./files/positive-matches/"
         self.false_positive_folder = "./files/false-positives/"
         self.detections = []
+        self.frames_for_gif = []
 
     # Check if file has finished saving
     def check_if_fully_saved(self):
@@ -82,7 +86,7 @@ class Video:
             os.remove(os.path.join(self.frame_generated_path, f))
         
         # Clean analysed
-        analysedfilelist = [ f for f in os.listdir(self.frame_predictions_path) if f.endswith(".jpg") ]
+        analysedfilelist = [ f for f in os.listdir(self.frame_predictions_path) if f.endswith(".jpg") or f.endswith(".gif") ]
         for f in analysedfilelist:
             os.remove(os.path.join(self.frame_predictions_path, f))
 
@@ -131,11 +135,64 @@ class Video:
         
         return detections
 
+    # Convert the images into animated gif
+    def convert_images_to_gif(self):
+
+        images = []
+        for file_name in self.frames_for_gif:
+            images.append(imageio.imread(file_name))
+
+        # Save Gif
+        print('Saving gif.')
+        gif_name = self.name.replace('mp4', 'gif')
+        gif_file_path = self.frame_predictions_path + gif_name
+
+        imageio.mimsave(gif_file_path, images)
+
+        # Optimise Gif
+        # optimize(gifOutputPath + gifName, colors=100, options=["--optimize=03", "--interlace"])
+
+        return gif_file_path
+
+
+    # Generate Gif for notification
+    def generate_gif(self, cam, current_frame):
+        for i in range(5):
+            # For each second requires
+            for j in range(2): # Frames to generate for each second
+                # Generate Frame
+                generated_frame_path = self.generate_frame(cam, current_frame)
+
+                # If no more frames end
+                if not generated_frame_path:
+                    break
+
+                # Analyse Frame
+                self.analyse_frame(generated_frame_path)
+
+                # Save frame to list to save as gif
+                self.frames_for_gif.append(self.frame_predictions_path + 'frame-' + str(current_frame) + '.jpg')
+
+                # Skip frames
+                for skip in range(9):
+                    cam.read() 
+
+                current_frame += 1
+
+        # Save Images into animated gif
+        gif_file_path = self.convert_images_to_gif()
+
+        # Upload File to Dropbox & notify
+        file = DropboxUtility(self.frame_predictions_path, os.path.basename(gif_file_path), self.created_at)
+        file.upload()
+
+
     # Analyse Video
     def analyse_video(self):
         print('Analysing video file')
 
-        # TODO: Clean old temporary files that might have been left over
+        # Clean up the temp files
+        self.clean_temporary_files()
 
         # Read the video from path
         cam = cv2.VideoCapture(self.path) 
@@ -149,7 +206,7 @@ class Video:
             # Skip frames
             if current_frame_number > 0:
                 for j in range(5):
-                    ret,frame = cam.read() 
+                    cam.read() 
 
             # Generate indiviudal frame
             generated_frame_path = self.generate_frame(cam, current_frame_number)
@@ -169,11 +226,11 @@ class Video:
                 if "person" in self.detections:
                     print("Found a person!")
 
-            #         generateGif(video, cam, currentframe)
+                    # Add frame to gif list
+                    self.frames_for_gif.append(generated_frame_path)
 
-                    # Upload File to Dropbox & notify
-                    file = DropboxUtility(self.frame_predictions_path, os.path.basename(generated_frame_path), self.created_at)
-                    file.upload()
+                    # Generate Gif & Notify
+                    self.generate_gif(cam, current_frame_number)
 
                     # Move video file
                     self.move_to_folder(self.positive_matches)

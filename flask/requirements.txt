@@ -18,6 +18,7 @@ grpcio==1.27.2
 h5py==2.10.0
 idna==2.9
 imageai==2.1.5
+imageio==2.8.0
 itsdangerous==1.1.0
 Jinja2==2.11.1
 Keras==2.3.1
