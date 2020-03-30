@@ -1,12 +1,17 @@
 # Utilities
-import os
+import warnings
+warnings.filterwarnings('ignore',category=FutureWarning)
+
+import os, logging
 import time
 import sys
 sys.path.append("..")
 from utils.DropboxUtility import DropboxUtility
 
 # Object Detection
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # Tesorflow logs | INFO and WARNING messages are not printed 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # Tesorflow logs | INFO and WARNING messages are not printed 
+logging.getLogger("tensorflow").setLevel(logging.CRITICAL)
+logging.getLogger("tensorflow_hub").setLevel(logging.CRITICAL)
 import cv2
 from imageai.Detection import ObjectDetection
 
