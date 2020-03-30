@@ -20,6 +20,7 @@ class Video:
     def __init__(self, file_path):
         self.path = file_path
         self.name = os.path.basename(file_path)
+        self.created_at = time.ctime(os.path.getctime(file_path))
         self.frame_generated_path = "./files/generated-frames/"
         self.frame_predictions_path = "./files/predicted-frames/"
         self.positive_matches = "./files/positive-matches/"
@@ -166,7 +167,7 @@ class Video:
             #         generateGif(video, cam, currentframe)
 
                     # Upload File to Dropbox & notify
-                    file = DropboxUtility(self.frame_predictions_path, os.path.basename(generated_frame_path))
+                    file = DropboxUtility(self.frame_predictions_path, os.path.basename(generated_frame_path), self.created_at)
                     file.upload()
 
                     # Move video file

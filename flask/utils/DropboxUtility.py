@@ -4,19 +4,19 @@ import re
 import os
 import requests
 import json
-from datetime import datetime
 
 # Create a dropbox object using an API v2 key
 API_KEY = os.getenv('DROPBOX_API_KEY')
 d = dropbox.Dropbox(API_KEY)
 
 class DropboxUtility:
-    def __init__(self, folder, filename):
+    def __init__(self, folder, filename, created_at):
         self.folder = pathlib.Path(folder)    # located in this folder
         self.filename = filename         # file name
         self.filepath = self.folder / self.filename  # path object, defining the file
         self.target = "/Notification Thumbnails/"              # the target folder
         self.targetfile = self.target + self.filename   # the target path and file name
+        self.created_at = created_at
 
     # Upload file to dropbox
     def upload(self):
@@ -44,13 +44,15 @@ class DropboxUtility:
         self.iftt_webhook(image_url)
         self.slack_webhook(image_url)
 
+        return self
+
     # IFTT Webhook
     def iftt_webhook(self, image_url):
         IFTTT_WEBHOOK = os.getenv('IFTTT_WEBHOOK')
 
         # Send notification using IFTTT
         print('Sending notification using IFTTT')
-        dataObj = {"value1" : image_url, "value2" : "Camera Name"}
+        dataObj = {"value1" : image_url, "value2" : f"{self.created_at}"}
         requests.post(IFTTT_WEBHOOK, data = dataObj)
 
     # Slack Webhook
@@ -65,14 +67,14 @@ class DropboxUtility:
                     "type": "section",
                     "text": {
                         "type": "mrkdwn",
-                        "text": ":warning:  *Person found on camera* :speaker:"
+                        "text": ":warning: *Person found on camera*"
                     }
                 },
                 {
                     "type": "context",
                     "elements": [
                         {
-                            "text": f"*{datetime.today().strftime('%a %d %B, %Y - %I:%M %p')}*",
+                            "text": f"*{self.created_at}*",
                             "type": "mrkdwn"
                         }
                     ]
