@@ -2,8 +2,8 @@
  CCTV Monitoring
 
 ## Environment Variables
-|      Variable     |                Description               |                         Example                        |
-|:-----------------:|:----------------------------------------:|:------------------------------------------------------:|
+| Variable          | Description                              | Example                                                |
+|-------------------|------------------------------------------|--------------------------------------------------------|
 | HOST_FILES        | Path to recording                        | /documents/NVR-Recordings/                             |
 | HOST_MODELS       | Path to model                            | /documents/models                                      |
 | DROPBOX_API_KEY   | API key to upload                        | xxxxxxx                                                |
