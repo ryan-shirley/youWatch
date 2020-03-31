@@ -15,7 +15,6 @@ from utils.utils import getListOfFiles
 
 # Object Detection
 import cv2
-import imageio
 from imageai.Detection import ObjectDetection
 
 # Set object detection model
