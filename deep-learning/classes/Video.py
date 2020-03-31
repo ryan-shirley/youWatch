@@ -62,7 +62,7 @@ class Video:
     # Load Model
     def load_model(self):
         from imageai.Detection import ObjectDetection
-        
+
         # Set object detection model
         detector = ObjectDetection()
         detector.setModelTypeAsYOLOv3()
@@ -144,7 +144,7 @@ class Video:
         print('Analysing video file')
 
         # Load Model
-        detector = load_model()
+        detector = self.load_model()
 
         # Clean up the temp files
         self.clean_temporary_files()
@@ -160,7 +160,7 @@ class Video:
 
             # Skip frames
             if current_frame_number > 0:
-                for j in range(5):
+                for j in range(9):
                     cam.read() 
 
             # Generate indiviudal frame
