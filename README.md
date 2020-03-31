@@ -5,12 +5,14 @@
 ## Local Setup
 
 ### 1. Run Redis Worker
-`cd flask/`
-`rq worker`
+`cd deep-learning`
+`source env/bin/activate`
+`python3 -u worker.py`
 
 ### 2. Run File Watcher
-`source flask/env/bin/activate`
-`python3 flask/run_watcher.py`
+`cd deep-learning`
+`source env/bin/activate`
+`python3 run_watcher.py`
 
 ### 3. Run Redis Server
 `redis-server`

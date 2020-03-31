@@ -27,13 +27,13 @@ services:
 
   worker:
     build:
-      context: "./flask"
+      context: ./deep-learning
+    command: "python3 -u worker.py"
     environment:
       - REDIS_HOST=redis_server
       - DROPBOX_API_KEY=${DROPBOX_API_KEY}
       - IFTTT_WEBHOOK=${IFTTT_WEBHOOK}
       - SLACK_WEBHOOK=${SLACK_WEBHOOK}
-    command: python3 -u worker.py
     depends_on:
       - redis_server
     restart: always
@@ -41,12 +41,10 @@ services:
       - "${HOST_FILES}:/app/files"
       - "${HOST_MODELS}:/app/models"
 
-      # TODO: Link single folder to files not multiple sperate ones
-
   watcher:
     container_name: watcher
     build:
-      context: "./flask"
+      context: ./deep-learning
     environment:
       - REDIS_HOST=redis_server
       - DROPBOX_API_KEY=${DROPBOX_API_KEY}

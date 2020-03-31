@@ -2,8 +2,8 @@
 
 *__pycache__/
 
-flask/env/
+*env/
 flask/files/
 .env
 dump.rdb
-flask/models/
+*models/
