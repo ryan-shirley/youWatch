@@ -135,58 +135,6 @@ class Video:
         
         return detections
 
-    # Convert the images into animated gif
-    def convert_images_to_gif(self):
-
-        images = []
-        for file_name in self.frames_for_gif:
-            images.append(imageio.imread(file_name))
-
-        # Save Gif
-        print('Saving gif.')
-        gif_name = self.name.replace('mp4', 'gif')
-        gif_file_path = self.frame_predictions_path + gif_name
-
-        imageio.mimsave(gif_file_path, images)
-
-        # Optimise Gif
-        # optimize(gifOutputPath + gifName, colors=100, options=["--optimize=03", "--interlace"])
-
-        return gif_file_path
-
-
-    # Generate Gif for notification
-    def generate_gif(self, cam, current_frame):
-        for i in range(5):
-            # For each second requires
-            for j in range(2): # Frames to generate for each second
-                # Generate Frame
-                generated_frame_path = self.generate_frame(cam, current_frame)
-
-                # If no more frames end
-                if not generated_frame_path:
-                    break
-
-                # Analyse Frame
-                self.analyse_frame(generated_frame_path)
-
-                # Save frame to list to save as gif
-                self.frames_for_gif.append(self.frame_predictions_path + 'frame-' + str(current_frame) + '.jpg')
-
-                # Skip frames
-                for skip in range(9):
-                    cam.read() 
-
-                current_frame += 1
-
-        # Save Images into animated gif
-        gif_file_path = self.convert_images_to_gif()
-
-        # Upload File to Dropbox & notify
-        file = DropboxUtility(self.frame_predictions_path, os.path.basename(gif_file_path), self.created_at)
-        file.upload()
-
-
     # Analyse Video
     def analyse_video(self):
         print('Analysing video file')
@@ -226,11 +174,10 @@ class Video:
                 if "person" in self.detections:
                     print("Found a person!")
 
-                    # Add frame to gif list
-                    self.frames_for_gif.append(generated_frame_path)
 
-                    # Generate Gif & Notify
-                    self.generate_gif(cam, current_frame_number)
+                    # Upload File to Dropbox & notify
+                    file = DropboxUtility(self.frame_predictions_path, os.path.basename(generated_frame_path), self.created_at)
+                    file.upload()
 
                     # Move video file
                     self.move_to_folder(self.positive_matches)
