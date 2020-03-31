@@ -10,12 +10,12 @@ API_KEY = os.getenv('DROPBOX_API_KEY')
 d = dropbox.Dropbox(API_KEY)
 
 class DropboxUtility:
-    def __init__(self, folder, filename, created_at):
+    def __init__(self, folder, filename, target_file_name, created_at):
         self.folder = pathlib.Path(folder)    # located in this folder
         self.filename = filename         # file name
         self.filepath = self.folder / self.filename  # path object, defining the file
         self.target = "/Notification Thumbnails/"              # the target folder
-        self.targetfile = self.target + self.filename   # the target path and file name
+        self.targetfile = self.target + target_file_name   # the target path and file name
         self.created_at = created_at
 
     # Upload file to dropbox

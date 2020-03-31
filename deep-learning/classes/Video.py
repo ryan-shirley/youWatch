@@ -173,9 +173,10 @@ class Video:
                 if "person" in self.detections:
                     print("Found a person!")
 
+                    target_file_name = os.path.splitext(self.name)[0] + '.jpg'
 
                     # Upload File to Dropbox & notify
-                    file = DropboxUtility(self.frame_predictions_path, os.path.basename(generated_frame_path), self.created_at)
+                    file = DropboxUtility(self.frame_predictions_path, os.path.basename(generated_frame_path), target_file_name, self.created_at)
                     file.upload()
 
                     # Move video file
