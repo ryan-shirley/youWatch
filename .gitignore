@@ -3,7 +3,7 @@
 *__pycache__/
 
 *env/
-flask/files/
+deep-learning/files/
 .env
 dump.rdb
 *models/
