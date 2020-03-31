@@ -7,6 +7,8 @@ from rq import Queue
 
 # Others
 import time
+import datetime
+from datetime import datetime as dt
 import os
 
 # Utils
@@ -25,7 +27,7 @@ q = Queue(connection=r)
 
 # Check is anyone home?
 def check_for_someone_home():
-    print('Checking if someone is home')
+    # print('Checking if someone is home')
 
     # Get list of names and phone ip address
     family_phone_ips = os.getenv('FAMILY_DEVICE_IPS')
@@ -44,6 +46,19 @@ def check_for_someone_home():
     print("No one is home")
     return False
 
+# Check if a time in within range
+def in_override_time():
+    start = datetime.time(23, 0, 0)
+    end = datetime.time(7, 0, 0)
+    now = dt.now()
+    now = now.strftime("%H:%M:%S")
+    now = datetime.datetime.strptime(now, "%H:%M:%S").time()
+
+    if start <= end:
+        return start <= now <= end
+    else:
+        return start <= now or now <= end
+
 # Check for new files
 def check_new_files():
     print("Task: Checking for new files")
@@ -52,10 +67,14 @@ def check_new_files():
     files = getListOfFiles(dir_path)
 
     # TODO: Move inside to only run if files are present
+    # Check if time is in specified range for override
+    override = in_override_time()
+    print("Override even if someone is home ", override)
+
     # Check for if someone is home
     devices_registered = os.getenv('FAMILY_DEVICE_IPS', False)
 
-    if devices_registered:
+    if devices_registered and not override:
         is_someone_home = check_for_someone_home()
 
     if len(files) > 0:
