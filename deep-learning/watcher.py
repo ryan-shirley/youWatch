@@ -16,11 +16,33 @@ load_dotenv()
 
 # Custom classes
 from classes.Video import Video
+from ping3 import ping
 
 # Redis Config
 redis_host = os.getenv('REDIS_HOST', 'localhost')
 r = redis.Redis(host=redis_host, port=6379, db=0)
 q = Queue(connection=r)
+
+# Check is anyone home?
+def check_for_someone_home():
+    print('Checking if someone is home')
+
+    # Get list of names and phone ip address
+    family_phone_ips = os.getenv('FAMILY_DEVICE_IPS')
+    family_phone_ips_list = [i.split("-") for i in family_phone_ips.split(" ")] 
+
+    # Loop people to check if home
+    for name, ip_address in family_phone_ips_list:
+        HOST_UP = ping(ip_address, timeout=5)
+
+        # Return if device is active
+        if HOST_UP > 0:
+            print(name + ' is home')
+            return True
+
+    # No one found at home
+    print("No one is home")
+    return False
 
 # Check for new files
 def check_new_files():
@@ -28,6 +50,13 @@ def check_new_files():
 
     dir_path = "./files/recordings"
     files = getListOfFiles(dir_path)
+
+    # TODO: Move inside to only run if files are present
+    # Check for if someone is home
+    devices_registered = os.getenv('FAMILY_DEVICE_IPS', False)
+
+    if devices_registered:
+        is_someone_home = check_for_someone_home()
 
     if len(files) > 0:
 

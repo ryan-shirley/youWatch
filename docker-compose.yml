@@ -34,6 +34,7 @@ services:
       - DROPBOX_API_KEY=${DROPBOX_API_KEY}
       - IFTTT_WEBHOOK=${IFTTT_WEBHOOK}
       - SLACK_WEBHOOK=${SLACK_WEBHOOK}
+      - FAMILY_DEVICE_IPS=${FAMILY_DEVICE_IPS}
     depends_on:
       - redis_server
     restart: always
@@ -50,6 +51,7 @@ services:
       - DROPBOX_API_KEY=${DROPBOX_API_KEY}
       - IFTTT_WEBHOOK=${IFTTT_WEBHOOK}
       - SLACK_WEBHOOK=${SLACK_WEBHOOK}
+      - FAMILY_DEVICE_IPS=${FAMILY_DEVICE_IPS}
     command: python3 -u run_watcher.py
     depends_on:
       - redis_server
