@@ -15,13 +15,6 @@ from utils.utils import getListOfFiles
 
 # Object Detection
 import cv2
-from imageai.Detection import ObjectDetection
-
-# Set object detection model
-detector = ObjectDetection()
-detector.setModelTypeAsYOLOv3()
-detector.setModelPath("./models/yolo.h5")
-detector.loadModel()
 
 class Video:
     def __init__(self, file_path):
@@ -65,6 +58,18 @@ class Video:
         self.path = new_file_path
 
         return self
+
+    # Load Model
+    def load_model(self):
+        from imageai.Detection import ObjectDetection
+        
+        # Set object detection model
+        detector = ObjectDetection()
+        detector.setModelTypeAsYOLOv3()
+        detector.setModelPath("./models/yolo.h5")
+        detector.loadModel()
+
+        return detector
 
     # Move file to new folder
     def move_to_folder(self, new_path):
@@ -117,7 +122,7 @@ class Video:
             return False
 
     # Analyse individual frame
-    def analyse_frame(self, frame_path):
+    def analyse_frame(self, frame_path, detector):
         # Get path to where to save prediction
         output_path = frame_path.replace(self.frame_generated_path,self.frame_predictions_path)
 
@@ -137,6 +142,9 @@ class Video:
     # Analyse Video
     def analyse_video(self):
         print('Analysing video file')
+
+        # Load Model
+        detector = load_model()
 
         # Clean up the temp files
         self.clean_temporary_files()
@@ -161,7 +169,7 @@ class Video:
             # Check if new frame was generated
             if generated_frame_path:
                 # Analyse Frame
-                detections = self.analyse_frame(generated_frame_path)
+                detections = self.analyse_frame(generated_frame_path, detector)
                 
                 # Add detections to video object
                 for d in detections:
