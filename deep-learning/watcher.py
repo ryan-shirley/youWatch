@@ -66,21 +66,28 @@ def check_new_files():
     dir_path = "./files/recordings"
     files = getListOfFiles(dir_path)
 
-    # TODO: Move inside to only run if files are present
-    # Check if time is in specified range for override
-    override = in_override_time()
-    print("Override even if someone is home ", override)
-
-    # Check for if someone is home
-    devices_registered = os.getenv('FAMILY_DEVICE_IPS', False)
-
-    if devices_registered and not override:
-        is_someone_home = check_for_someone_home()
 
     if len(files) > 0:
+        # Check if time is in specified range for override
+        override = in_override_time()
+        print("Override even if someone is home ", override)
+
+        # Check for if someone is home
+        is_someone_home = False
+        devices_registered = os.getenv('FAMILY_DEVICE_IPS', False)
+        if devices_registered and not override:
+            is_someone_home = check_for_someone_home()
 
         # Add videos into request queue individualy if fully saved
         for file_path in files:
+
+            # Remove file if somone is home and not in time for override
+            if is_someone_home and not override:
+                # Remove File
+                os.remove(file_path)
+                # print("File Removed!", file_path)
+                continue
+
             video = Video(file_path)
 
             # Check file has fully saved
