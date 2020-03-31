@@ -150,16 +150,16 @@ class Video:
         imageio.mimsave(gif_file_path, images)
 
         # Optimise Gif
-        # optimize(gifOutputPath + gifName, colors=100, options=["--optimize=03", "--interlace"])
+        os.system(f"./gifsicle -O3 --interlace --colors 200 {gif_file_path} -o {gif_file_path}")
 
         return gif_file_path
 
 
     # Generate Gif for notification
     def generate_gif(self, cam, current_frame):
-        for i in range(5):
+        for i in range(6):
             # For each second requires
-            for j in range(2): # Frames to generate for each second
+            for j in range(3): # Frames to generate for each second
                 # Generate Frame
                 generated_frame_path = self.generate_frame(cam, current_frame)
 
