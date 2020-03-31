@@ -6,4 +6,4 @@
 deep-learning/files/
 .env
 dump.rdb
-*models/
+deep-learning/models/
