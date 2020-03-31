@@ -16,3 +16,4 @@ RUN mkdir -p files/recordings
 RUN mkdir -p files/generated-frames
 RUN mkdir -p files/predicted-frames
 RUN mkdir -p files/positive-matches
+RUN mkdir -p files/false-positives
