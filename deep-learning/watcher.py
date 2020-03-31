@@ -11,6 +11,8 @@ import os
 
 # Utils
 from utils.utils import getListOfFiles
+from dotenv import load_dotenv
+load_dotenv()
 
 # Custom classes
 from classes.Video import Video
