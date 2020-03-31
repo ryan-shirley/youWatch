@@ -10,11 +10,5 @@ ADD . /app
 # Install the dependencies
 RUN pip install -r requirements.txt
 
-# Make directories for files
-RUN mkdir -p files/recordings
-RUN mkdir -p files/generated-frames
-RUN mkdir -p files/predicted-frames
-RUN mkdir -p files/positive-matches
-
 # run the command to start uWSGI
 CMD ["uwsgi", "app.ini"]
