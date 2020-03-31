@@ -24,7 +24,7 @@ q = Queue(connection=r)
 
 # Check for new files
 def check_new_files():
-    print("Task: Checking for new files\n")
+    print("Task: Checking for new files")
 
     dir_path = "./files/recordings"
     files = getListOfFiles(dir_path)
@@ -45,7 +45,7 @@ def check_new_files():
                 print(f"Adding {video.name} to the queue to be analysed.")
                 q.enqueue(video.analyse_video)
 
-        print("\nTask: Completed checking for new files\n")
+        print("Task: Completed checking for new files")
     else:
         print("No new video files")
 
