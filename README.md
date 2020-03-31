@@ -1,6 +1,15 @@
 # youWatch
  CCTV Monitoring
 
+## Environment Variables
+|      Variable     |                Description               |                         Example                        |
+|:-----------------:|:----------------------------------------:|:------------------------------------------------------:|
+| HOST_FILES        | Path to recording                        | /documents/NVR-Recordings/                             |
+| HOST_MODELS       | Path to model                            | /documents/models                                      |
+| DROPBOX_API_KEY   | API key to upload                        | xxxxxxx                                                |
+| IFTTT_WEBHOOK     | Webhook Url                              | https://maker.ifttt.com/trigger/{event}/with/key/{key} |
+| SLACK_WEBHOOK     | Webhook Url                              | https://hooks.slack.com/services/xxx                   |
+| FAMILY_DEVICE_IPS | Name and ip address family members phone | Name-192.168.1.10 Name2-192.168.1.11                   |
 
 ## Local Setup
 
