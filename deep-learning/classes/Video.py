@@ -20,7 +20,7 @@ class Video:
     def __init__(self, file_path):
         self.path = file_path
         self.name = os.path.basename(file_path)
-        self.created_at = time.ctime(os.path.getctime(file_path))
+        self.created_at = time.ctime(os.path.getmtime(file_path))
         self.frame_generated_path = "./files/generated-frames/"
         self.frame_predictions_path = "./files/predicted-frames/"
         self.positive_matches = "./files/positive-matches/"
