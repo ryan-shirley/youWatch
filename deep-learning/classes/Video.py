@@ -71,17 +71,6 @@ class Video:
 
         return detector
 
-    # Move file to new folder
-    def move_to_folder(self, new_path):
-        # Generate new file path
-        new_file_name = self.path.replace("-saved", '')
-        new_file_path = new_file_name.replace("./files/recordings/", new_path)
-
-        # Move file to new location
-        os.rename(self.path, new_file_path)
-
-        return new_file_path
-
     # Remove files created from analysis
     def clean_temporary_files(self):
         # Clean original
@@ -187,8 +176,8 @@ class Video:
                     file = DropboxUtility(self.frame_predictions_path, os.path.basename(generated_frame_path), target_file_name, self.created_at)
                     file.upload()
 
-                    # Move video file
-                    self.move_to_folder(self.positive_matches)
+                    # Remove video file
+                    os.remove(self.path)
                     break
 
                 # increasing counter so that it will 
@@ -197,7 +186,8 @@ class Video:
             else:
                 print("All frames generated.\nNo person was found!")
 
-                self.move_to_folder(self.false_positive_folder)
+                # Remove video file
+                os.remove(self.path)
                 break
 
         # Release all space and windows once done 
