@@ -51,7 +51,7 @@ def check_for_someone_home():
 
 # Check if a time in within range
 def in_override_time():
-    start = datetime.time(23, 0, 0)
+    start = datetime.time(22, 0, 0)
     end = datetime.time(7, 0, 0)
     now = dt.now()
     now = now.strftime("%H:%M:%S")
