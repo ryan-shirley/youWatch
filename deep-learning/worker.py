@@ -6,10 +6,6 @@ import time
 from dotenv import load_dotenv
 load_dotenv()
 
-
-# Sleep - Wait so redis will have started
-time.sleep(2)
-
 # Listening
 listen = ['high', 'default', 'low']
 
