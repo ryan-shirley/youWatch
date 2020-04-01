@@ -10,6 +10,7 @@ import time
 import datetime
 from datetime import datetime as dt
 import os
+import socket
 
 # Utils
 from utils.utils import getListOfFiles
@@ -18,7 +19,6 @@ load_dotenv()
 
 # Custom classes
 from classes.Video import Video
-from ping3 import ping
 
 # Redis Config
 redis_host = os.getenv('REDIS_HOST', 'localhost')
@@ -31,16 +31,19 @@ def check_for_someone_home():
 
     # Get list of names and phone ip address
     family_phone_ips = os.getenv('FAMILY_DEVICE_IPS')
-    family_phone_ips_list = [i.split("-") for i in family_phone_ips.split(" ")] 
+    family_phone_ips_list = [i.split(".") for i in family_phone_ips.split(" ")] 
 
     # Loop people to check if home
-    for name, ip_address in family_phone_ips_list:
-        HOST_UP = ping(ip_address, timeout=5)
+    for name, host_name in family_phone_ips_list:
 
-        # Return if device is active
-        if HOST_UP > 0:
-            print(name + ' is home')
-            return True
+        try:
+            IPAddr = socket.gethostbyname(host_name)
+            # print(f"{name}'s' device {host_name} was found with an ip of {IPAddr}")
+
+            return 1
+        except socket.error:
+            print(f"{name}'s' device {host_name} could not be found.")
+            continue
 
     # No one found at home
     print("No one is home")
