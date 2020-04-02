@@ -81,6 +81,9 @@ def check_new_files():
         if devices_registered and not override:
             is_someone_home = check_for_someone_home()
 
+            if is_someone_home:
+                print("Removing video files. Someone is home")
+
         # Add videos into request queue individualy if fully saved
         for file_path in files:
 
