@@ -118,7 +118,7 @@ class Video:
         # print("Saving analysed frame.")
         # Custom object detector to only detect people
         custom = detector.CustomObjects(person=True)
-        detection_results = detector.detectCustomObjectsFromImage(custom_objects=custom, input_image=frame_path, output_image_path=output_path, minimum_percentage_probability=40)
+        detection_results = detector.detectCustomObjectsFromImage(custom_objects=custom, input_image=frame_path, output_image_path=output_path, minimum_percentage_probability=65)
 
         # Loop through detections found
         detections = []
